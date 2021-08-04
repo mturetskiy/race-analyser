@@ -14,14 +14,14 @@ public class Driver {
 
     public static final AtomicInteger idGen = new AtomicInteger(1);
     private int driverID;
-    private int teamNumber;
+    private Team team;
     private String name;
 
     private Map<Integer, DriverSession> driverSessions;
 
-    public Driver(String name, int teamNumber) {
+    public Driver(String name, Team team) {
         this.name = name;
-        this.teamNumber = teamNumber;
+        this.team = team;
         this.driverID = idGen.getAndIncrement();
         this.driverSessions = new HashMap<>();
     }
@@ -30,8 +30,8 @@ public class Driver {
         return name;
     }
 
-    public int getTeamNumber() {
-        return teamNumber;
+    public Team getTeam() {
+        return team;
     }
 
     public DriverSession getSession(Integer sessionNum, Car sessionCar) {

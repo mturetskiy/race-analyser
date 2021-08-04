@@ -45,11 +45,11 @@ public class DriverSession {
         DescriptiveStatistics warmupStat = new DescriptiveStatistics();
         DescriptiveStatistics blueStat = new DescriptiveStatistics();
         DescriptiveStatistics fightStat = new DescriptiveStatistics();
+        DescriptiveStatistics stopStat = new DescriptiveStatistics();
 
         laps.stream().filter(l -> l.getLapMarker() == normal)
                 .forEach(lap -> normalStat.addValue(lap.getLapTime()));
 
-//        double normalMedian = normalStat.getPercentile(50);
         double warmupCutTime = normalStat.getMean();
 
         boolean warmupDone = false;
@@ -63,26 +63,30 @@ public class DriverSession {
             } else if (lapMarker == LapRecord.LapMarker.fight) {
                 fightStat.addValue(lapTime);
             } else if (lapMarker == normal) {
-//                log.info("{}#{}  -> lap #{} : {} [{}]", driver.getName(), sessionNumber, lap.getLapNumber(), lapTime, lapMarker);
-                if ((lapNum <= MIN_WARMUP_LAPS) || (!warmupDone &&  lapTime > warmupCutTime)) {
+                if ((lapNum <= MIN_WARMUP_LAPS) || (!warmupDone && lapTime > warmupCutTime)) {
                     warmupStat.addValue(lapTime);
                 } else {
                     warmupDone = true;
                     cleanStat.addValue(lapTime);
                 }
+            } else if (lapMarker == stop) {
+                stopStat.addValue(lapTime);
+            } else {
+                log.warn("Untracked lap: {}#{}  -> lap #{} : {} [{}]", driver.getName(), sessionNumber, lap.getLapNumber(), lapTime, lapMarker);
             }
 
             lapNum++;
         }
 
         return new SessionAnalysis(driver.getName(), sessionNumber)
-                .setTeamNum(driver.getTeamNumber())
+                .setTeam(driver.getTeam())
                 .setCar(sessionCar)
                 .setTotalLaps(laps.size())
                 .setBlueStats(blueStat)
                 .setFightStats(fightStat)
                 .setCleanStats(cleanStat)
                 .setWarmupStats(warmupStat, warmupCutTime)
+                .setStopStats(stopStat)
                 .calculateWarmupLostTime()
                 .calculateInconsistencyLostTime()
                 .calculateBlueLostTime()

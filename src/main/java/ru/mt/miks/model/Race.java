@@ -15,6 +15,9 @@ public class Race {
     @JsonProperty("raceSettings")
     private RaceSettings raceSettings;
 
+    @JsonProperty("comps")
+    private List<Team> teams;
+
     public List<Session> getSessions() {
         return sessions;
     }
@@ -37,5 +40,13 @@ public class Race {
 
     public void setRaceSettings(RaceSettings raceSettings) {
         this.raceSettings = raceSettings;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 }

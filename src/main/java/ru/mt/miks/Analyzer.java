@@ -31,9 +31,7 @@ public class Analyzer {
     final Logger log = LoggerFactory.getLogger(Analyzer.class);
 
     public static final double TARGET_NORMAL_LAPTIME_INSTABILITY = 0.15;
-//    public static final double TARGET_BLUE_LAPTIME_INSTABILITY = 0.5;
     public static final int MIN_WARMUP_LAPS = 1;
-//    public static final double TARGET_WARMUP_LAPTIME_INSTABILITY = 0.5;
 
     private File dataFile; // lap records
     private File statsFile; // common race info, including cars
@@ -42,6 +40,7 @@ public class Analyzer {
     private Map<Pair<String, Integer>, Car> sessionCars = new HashMap<>();    // Driver <> SessionNum => CarNum mapping
 
     private Map<String, Driver> drivers = new HashMap<>();
+    private Map<Integer, Team> teams = new HashMap<>();
     private Race raceStats;
 
     public Analyzer(String dataFilePath, String statsFilePath) {
@@ -83,7 +82,12 @@ public class Analyzer {
             ObjectMapper objectMapper = new ObjectMapper();
             Race race = objectMapper.readValue(statsFile, Race.class);
 
-            log.info("Loaded race: {} stats", race.getRaceSettings().getRaceID());
+            List<Team> raceTeams = race.getTeams();
+            if (!raceTeams.isEmpty()) {
+                raceTeams.stream().forEach(t -> teams.put(t.getTeamNumber(), t));
+            }
+
+            log.info("Loaded race: {} stats. Race teams: {}", race.getRaceSettings().getRaceID(), teams.size());
 
             // filter null sessions:
             List<Session> sessions = race.getSessions();
@@ -129,7 +133,9 @@ public class Analyzer {
 
             String driverName = record.getDriver();
             int sessionNumber = record.getSessionNumber();
-            Driver driver = drivers.computeIfAbsent(driverName, n -> new Driver(n, record.getTeamNumber()));
+            int teamNumber = record.getTeamNumber();
+            Team team = teams.get(teamNumber);
+            Driver driver = drivers.computeIfAbsent(driverName, n -> new Driver(n, team));
             Car sessionCar = sessionCars.get(new ImmutablePair<>(driverName, sessionNumber));
             DriverSession session = driver.getSession(sessionNumber, sessionCar);
 
@@ -160,7 +166,7 @@ public class Analyzer {
 //                .filter(d -> d.getName().equals("Смирнов Валерий"))
 //                .filter(d -> d.getName().equals("Михаил Лобода"))
 //                .filter(d -> d.getName().equals("Кузнецов Антон"))
-//                .filter(d -> d.getTeamNumber() == 1)
+//                .filter(d -> d.getTeam().getTeamNumber() == 6)
                     .flatMap(d -> d.getSessionsAnalysis().stream())
                     .forEach(sa -> {
 //                        log.info("-----------------------------------------------------------------\n{}", sa);
