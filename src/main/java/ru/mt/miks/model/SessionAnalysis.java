@@ -2,15 +2,15 @@ package ru.mt.miks.model;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static ru.mt.miks.Analyzer.TARGET_BLUE_LAPTIME_INSTABILITY;
 import static ru.mt.miks.Analyzer.TARGET_NORMAL_LAPTIME_INSTABILITY;
 
 public class SessionAnalysis {
     public static final String FIELD_SEPARATOR = ",";
-
+    private int teamNum;
     private final String driverName;
     private final int sessionNum;
     private int carNum;
@@ -32,7 +32,7 @@ public class SessionAnalysis {
     private int blueLaps;
     private double blueMean;
     private double blueMin;
-    private double targetBlueLapTime;
+//    private double targetBlueLapTime;
 
     // For Fight laps:
     private int fightLaps;
@@ -62,6 +62,11 @@ public class SessionAnalysis {
         return this;
     }
 
+    public SessionAnalysis setTeamNum(int teamNum) {
+        this.teamNum = teamNum;
+        return this;
+    }
+
     public SessionAnalysis calculateWarmupLostTime() {
         lostOnWarmup = warmupLaps * (warmupAvg - targetLapTime);
         return this;
@@ -86,7 +91,7 @@ public class SessionAnalysis {
     SessionAnalysis setBestLapTime(double bestLapTime) {
         this.bestLapTime = bestLapTime;
         this.targetLapTime = bestLapTime + TARGET_NORMAL_LAPTIME_INSTABILITY;
-        this.targetBlueLapTime = bestLapTime + TARGET_BLUE_LAPTIME_INSTABILITY;
+//        this.targetBlueLapTime = bestLapTime + TARGET_BLUE_LAPTIME_INSTABILITY;
         return this;
     }
 
@@ -99,14 +104,14 @@ public class SessionAnalysis {
 
     @Override
     public String toString() {
-        return driverName + ", Session# " + sessionNum + ", car: #" + carNum + " ; laps: " + totalLaps
+        return driverName + ", team # " + teamNum + ", Session# " + sessionNum + ", car: #" + carNum + " ; laps: " + totalLaps
                 + "\n\tClean Laps: " + cleanLaps + ", best: " + ft(bestLapTime) + ", target: " + ft(targetLapTime)
                 + ", avg: " + ft(cleanAvg) + ", avg instability: " + ft(avgInstability) + ", lost: " + ft(lostOnAvgInstability)
 //                + "\n\t\tmedian: " + ft(cleanMedian) + ", median instability: " + ft(medianInstability) + ", lost: " + ft(lostOnMedianInstability)
                 + "\n\tWarmup Laps: " + warmupLaps + ", avg: " + ft(warmupAvg) + ", warmupTimeCut: " + ft(warmupTimeCut)
                     + ", lost: " + ft(lostOnWarmup)
                 + "\n\tBlue Laps: " + blueLaps + ", avg: " + ft(blueMean) + ", best: " + ft(blueMin)
-                    + ", target: " + ft(targetBlueLapTime) + ", lost: " + ft(lostOnBlue)
+                    +/* ", target: " + ft(targetBlueLapTime) +*/ ", lost: " + ft(lostOnBlue)
                 + "\n\tFight Laps: " + fightLaps + ", avg: " + ft(fightsMean) + ", lost: " + ft(lostOnFight)
                 + "\n\tTotal lost: " + ft(getTotalLost())
 
@@ -115,6 +120,7 @@ public class SessionAnalysis {
 
     public static String toCsvHeader() {
         return "DriverName" + FIELD_SEPARATOR   // 1
+                + "Team" + FIELD_SEPARATOR   // 2
                 + "Session" + FIELD_SEPARATOR   // 2
                 + "Car" + FIELD_SEPARATOR       // 3
                 + "Total laps" + FIELD_SEPARATOR    // 4
@@ -134,7 +140,7 @@ public class SessionAnalysis {
                 + "Blue laps" + FIELD_SEPARATOR // 18
                 + "Blue avg lap time" + FIELD_SEPARATOR // 19
                 + "Blue best lap time" + FIELD_SEPARATOR // 20
-                + "Target blue lap time" + FIELD_SEPARATOR // 21
+//                + "Target blue lap time" + FIELD_SEPARATOR // 21
                 + "Lost on blue" + FIELD_SEPARATOR // 22
                 + "Fight laps" + FIELD_SEPARATOR // 23
                 + "Fight avg lap time" + FIELD_SEPARATOR // 24
@@ -145,6 +151,7 @@ public class SessionAnalysis {
 
     public String toCsvString() {
         return driverName + FIELD_SEPARATOR // 1
+                + teamNum + FIELD_SEPARATOR // 2
                 + sessionNum + FIELD_SEPARATOR // 2
                 + carNum + FIELD_SEPARATOR // 3
                 + totalLaps + FIELD_SEPARATOR // 4
@@ -164,7 +171,7 @@ public class SessionAnalysis {
                 + blueLaps + FIELD_SEPARATOR // 18
                 + ft(blueMean) + FIELD_SEPARATOR // 19
                 + ft(blueMin) + FIELD_SEPARATOR // 20
-                + ft(targetBlueLapTime) + FIELD_SEPARATOR // 21
+//                + ft(targetBlueLapTime) + FIELD_SEPARATOR // 21
                 + ft(lostOnBlue) + FIELD_SEPARATOR // 22
                 + fightLaps + FIELD_SEPARATOR //23
                 + ft(fightsMean) + FIELD_SEPARATOR // 24

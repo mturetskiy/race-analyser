@@ -163,7 +163,14 @@ public class LapRecord implements Comparable<LapRecord> {
         normal(""),
         pit("PitUser"),
         fight("Fight"),
-        blueFlag("LongLight");
+        blueFlag("LongLight"),
+        brokenCar("BrokeOldCar"),
+        stop("StopGo"),
+        longStop("StopGoOvertime"),
+        stop2("StopGoSimaphore"), // ?
+        tech("tech"), // ?
+        waitSemaphore("WaitSimaphore") // ?
+        ;
 
         private String code;
         private static Map<String, LapMarker> markerCodes = new HashMap<>();

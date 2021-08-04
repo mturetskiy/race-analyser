@@ -21,13 +21,17 @@ win 10:
 wget --post-data="raceId=e88f5fe6-4da9-43e2-aeed-055613442a66" -O race-stats.json http://forza-race.racemann.com/race/GetRaceStartData
 wget -O race-data.csv http://forza-race.racemann.com/race/csv/e88f5fe6-4da9-43e2-aeed-055613442a66
 
+
+// TODO: Pit time: 30 sec + ...
+// TODO: add stop&go loses
+// TODO: add broken loss
  */
 
 public class Analyzer {
     final Logger log = LoggerFactory.getLogger(Analyzer.class);
 
-    public static final double TARGET_NORMAL_LAPTIME_INSTABILITY = 0.2;
-    public static final double TARGET_BLUE_LAPTIME_INSTABILITY = 0.5;
+    public static final double TARGET_NORMAL_LAPTIME_INSTABILITY = 0.15;
+//    public static final double TARGET_BLUE_LAPTIME_INSTABILITY = 0.5;
     public static final int MIN_WARMUP_LAPS = 1;
 //    public static final double TARGET_WARMUP_LAPTIME_INSTABILITY = 0.5;
 
@@ -141,7 +145,7 @@ public class Analyzer {
 
         File exportFile = new File(statsFile.getParent(), raceStats.getRaceSettings().getRaceID() + ".csv");
         log.info("Exporting to: {}", exportFile.getAbsolutePath());
-        try (FileWriter fw = new FileWriter(exportFile, false);
+        try (FileWriter fw = new FileWriter(exportFile, Charset.forName("Windows-1251"), false);
              final BufferedWriter bw = new BufferedWriter(fw)) {
 
             bw.write(SessionAnalysis.toCsvHeader());
@@ -159,7 +163,7 @@ public class Analyzer {
 //                .filter(d -> d.getTeamNumber() == 1)
                     .flatMap(d -> d.getSessionsAnalysis().stream())
                     .forEach(sa -> {
-                        log.info("-----------------------------------------------------------------\n{}", sa);
+//                        log.info("-----------------------------------------------------------------\n{}", sa);
                         try {
                             bw.write("\n");
                             bw.write(sa.toCsvString());
