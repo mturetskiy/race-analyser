@@ -16,13 +16,19 @@ import java.util.stream.Collectors;
 /*
 wget --post-data 'raceId=e9758a18-d03d-4be5-8fb7-810b6e983df7' -O race-stats.json https://forza-race.racemann.com/race/GetRaceStartData
 wget -O race-data.csv https://forza-race.racemann.com/race/csv/e9758a18-d03d-4be5-8fb7-810b6e983df7
+
+// TODO: Pit time: 30 sec + ...
+// TODO: add stop&go loses
+// TODO: add broken loss
+
+91%
  */
 
 public class Analyzer {
     final Logger log = LoggerFactory.getLogger(Analyzer.class);
 
-    public static final double TARGET_NORMAL_LAPTIME_INSTABILITY = 0.2;
-    public static final double TARGET_BLUE_LAPTIME_INSTABILITY = 0.5;
+    public static final double TARGET_NORMAL_LAPTIME_INSTABILITY = 0.15;
+//    public static final double TARGET_BLUE_LAPTIME_INSTABILITY = 0.5;
     public static final int MIN_WARMUP_LAPS = 1;
 //    public static final double TARGET_WARMUP_LAPTIME_INSTABILITY = 0.5;
 
@@ -136,7 +142,7 @@ public class Analyzer {
 
         File exportFile = new File(statsFile.getParent(), raceStats.getRaceSettings().getRaceID() + ".csv");
         log.info("Exporting to: {}", exportFile.getAbsolutePath());
-        try (FileWriter fw = new FileWriter(exportFile, false);
+        try (FileWriter fw = new FileWriter(exportFile, Charset.forName("Windows-1251"), false);
              final BufferedWriter bw = new BufferedWriter(fw)) {
 
             bw.write(SessionAnalysis.toCsvHeader());
@@ -154,7 +160,7 @@ public class Analyzer {
 //                .filter(d -> d.getTeamNumber() == 1)
                     .flatMap(d -> d.getSessionsAnalysis().stream())
                     .forEach(sa -> {
-                        log.info("-----------------------------------------------------------------\n{}", sa);
+//                        log.info("-----------------------------------------------------------------\n{}", sa);
                         try {
                             bw.write("\n");
                             bw.write(sa.toCsvString());

@@ -76,6 +76,7 @@ public class DriverSession {
         }
 
         return new SessionAnalysis(driver.getName(), sessionNumber)
+                .setTeamNum(driver.getTeamNumber())
                 .setCar(sessionCar)
                 .setTotalLaps(laps.size())
                 .setBlueStats(blueStat)
