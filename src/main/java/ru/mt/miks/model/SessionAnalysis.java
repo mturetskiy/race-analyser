@@ -173,9 +173,10 @@ public class SessionAnalysis {
                 ;
     }
 
-    private float ft(double val) {
+    private String ft(double val) {
         BigDecimal bigDecimal = new BigDecimal(val);
-        return bigDecimal.setScale(3, RoundingMode.HALF_UP).floatValue();
+        float floatValue = bigDecimal.setScale(3, RoundingMode.HALF_UP).floatValue();
+        return String.valueOf(floatValue).replace('.', ',');
     }
 
     public SessionAnalysis setCleanStats(DescriptiveStatistics cleanStats) {

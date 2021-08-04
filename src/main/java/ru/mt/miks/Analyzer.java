@@ -16,6 +16,11 @@ import java.util.stream.Collectors;
 /*
 wget --post-data 'raceId=e9758a18-d03d-4be5-8fb7-810b6e983df7' -O race-stats.json https://forza-race.racemann.com/race/GetRaceStartData
 wget -O race-data.csv https://forza-race.racemann.com/race/csv/e9758a18-d03d-4be5-8fb7-810b6e983df7
+
+win 10:
+wget --post-data="raceId=e88f5fe6-4da9-43e2-aeed-055613442a66" -O race-stats.json http://forza-race.racemann.com/race/GetRaceStartData
+wget -O race-data.csv http://forza-race.racemann.com/race/csv/e88f5fe6-4da9-43e2-aeed-055613442a66
+
  */
 
 public class Analyzer {
