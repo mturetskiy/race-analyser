@@ -1,6 +1,7 @@
-package ru.mt.miks.model;
+package ru.mt.miks.pojo;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import ru.mt.miks.model.Team;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

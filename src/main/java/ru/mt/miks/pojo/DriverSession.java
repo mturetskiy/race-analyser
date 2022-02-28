@@ -1,4 +1,4 @@
-package ru.mt.miks.model;
+package ru.mt.miks.pojo;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.slf4j.Logger;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ru.mt.miks.Analyzer.MIN_WARMUP_LAPS;
-import static ru.mt.miks.model.LapRecord.LapMarker.*;
+import static ru.mt.miks.pojo.LapRecord.LapMarker.*;
 
 public class DriverSession {
     final Logger log = LoggerFactory.getLogger(DriverSession.class);

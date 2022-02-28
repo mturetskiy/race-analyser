@@ -1,4 +1,6 @@
-package ru.mt.miks.model;
+package ru.mt.miks.pojo;
+
+import ru.mt.miks.pojo.LapRecord;
 
 public class Lap {
     private Integer lapNumber;

@@ -2,11 +2,15 @@ package ru.mt.miks.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ru.mt.miks.model.RaceSettings;
+import ru.mt.miks.model.Session;
+import ru.mt.miks.model.Team;
+import ru.mt.miks.model.Warn;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Race {
+public class RaceData {
     private List<Session> sessions;
 
     @JsonProperty("warns")

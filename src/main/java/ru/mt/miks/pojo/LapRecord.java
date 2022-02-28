@@ -1,4 +1,4 @@
-package ru.mt.miks.model;
+package ru.mt.miks.pojo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-//RegNumber;Comp;Pos;Lap;LapTime;RaceTime;LapStat;SessNumber;Driver
+//RegNumber;Comp;Pos;Lap;LapTime;RaceTime;LapStat;SessNumber;Driver;Car
 public class LapRecord implements Comparable<LapRecord> {
     final Logger log = LoggerFactory.getLogger(LapRecord.class);
 
     public static final String SEPARATOR = ";";
-    public static final int FIELDS_COUNT = 9;
+    public static final int FIELDS_COUNT = 10;
 
     private int teamNumber;
     private String teamName;
@@ -23,6 +23,7 @@ public class LapRecord implements Comparable<LapRecord> {
     private LapMarker lapMarker;
     private int sessionNumber;
     private String driver;
+    private int car;
 
     private LapRecord() {
     }
@@ -43,6 +44,7 @@ public class LapRecord implements Comparable<LapRecord> {
         record.setLapMarker(parts[6]);
         record.setSessionNumber(Integer.parseInt(parts[7]));
         record.setDriver(parts[8]);
+        record.setCar(Integer.parseInt(parts[9]));
         return record;
     }
 
@@ -118,6 +120,14 @@ public class LapRecord implements Comparable<LapRecord> {
         this.driver = driver;
     }
 
+    public int getCar() {
+        return car;
+    }
+
+    public void setCar(int car) {
+        this.car = car;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -159,6 +169,7 @@ public class LapRecord implements Comparable<LapRecord> {
         return Integer.compare(this.raceTime, o.raceTime);
     }
 
+    @Deprecated
     public enum LapMarker {
         normal(""),
         pit("PitUser"),

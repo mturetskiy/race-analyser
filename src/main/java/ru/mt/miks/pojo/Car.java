@@ -1,4 +1,4 @@
-package ru.mt.miks.model;
+package ru.mt.miks.pojo;
 
 import java.util.*;
 

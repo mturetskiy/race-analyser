@@ -6,6 +6,8 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.mt.miks.model.RaceData;
+import ru.mt.miks.pojo.*;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -41,7 +43,7 @@ public class Analyzer {
 
     private Map<String, Driver> drivers = new HashMap<>();
     private Map<Integer, Team> teams = new HashMap<>();
-    private Race raceStats;
+    private RaceData raceStats;
 
     public Analyzer(String dataFilePath, String statsFilePath) {
         this.dataFile = new File(dataFilePath);
@@ -77,10 +79,10 @@ public class Analyzer {
         }
     }
 
-    private Race readRaceStats() {
+    private RaceData readRaceStats() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            Race race = objectMapper.readValue(statsFile, Race.class);
+            RaceData race = objectMapper.readValue(statsFile, RaceData.class);
 
             List<Team> raceTeams = race.getTeams();
             if (!raceTeams.isEmpty()) {
